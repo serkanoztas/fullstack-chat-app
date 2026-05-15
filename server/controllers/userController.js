@@ -17,7 +17,7 @@ export const signup = async (req, res) => {
             return res.json({ success: false, message: "Account already exists" });
         }
 
-        const salt = bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
         const newUser = await User.create({
@@ -67,16 +67,16 @@ export const checkAuth = (req, res) => {
 //Controller to update user profile details
 export const updateProfile = async (req, res) => {
     try {
-        const { profilPic, fullName, bio } = req.body;
+        const { profilePic, fullName, bio } = req.body;
         const userId = req.user._id;
         let updatedUser;
 
-        if (!profilPic) {
+        if (!profilePic) {
             updatedUser = await User.findByIdAndUpdate(userId, { bio, fullName }, { new: true });
         }
         else {
-            const upload = cloudinary.uploader.upload(profilPic);
-            updatedUser = await User.findByIdAndUpdate(userId, { profilPic: upload.secure_url, bio, fullName }, { new: true });
+            const upload = await cloudinary.uploader.upload(profilePic);
+            updatedUser = await User.findByIdAndUpdate(userId, { profilePic: upload.secure_url, bio, fullName }, { new: true });
         }
 
         res.json({ success: true, user: updatedUser });

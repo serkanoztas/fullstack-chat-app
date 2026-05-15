@@ -1,21 +1,26 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import assets from '../assets/assets'
+import { AuthContext } from '../context/AuthContext';
 
 const LoginPage = () => {
 
   const [currState, setCurrState] = useState("Signup");
   const [isDataSubmitted, setIsDataSubmitted] = useState(false);
   const [bio, setBio] = useState("");
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const onSubmitHandler = () => {
+  const { login } = useContext(AuthContext);
+
+  const onSubmitHandler = (event) => {
     event.preventDefault();
-    if (currState === "singup" && !isDataSubmitted) {
+    if (currState === "Signup" && !isDataSubmitted) {
       setIsDataSubmitted(true);
       return;
     }
+
+    login(currState === "Signup" ? "signup" : "login", { fullName, email, password, bio });
   }
 
   return (
@@ -31,14 +36,14 @@ const LoginPage = () => {
           </div>
           {
             currState === "Signup" && !isDataSubmitted && (
-              <input onClick={(e) => setName(e.target.value)} className='border-1 border-gray-400 rounded-lg px-4 py-2  max-w-[300px] w-full' type="text" placeholder='Full Name' />
+              <input onChange={(e) => setFullName(e.target.value)} className='border-1 border-gray-400 rounded-lg px-4 py-2  max-w-[300px] w-full' type="text" placeholder='Full Name' />
             )
           }
           {
             !isDataSubmitted && (
               <>
-                <input onClick={(e) => setEmail(e.target.value)} className='border-1 border-gray-400 rounded-lg px-4 py-2  max-w-[300px] w-full' type="email" placeholder='Email Address' />
-                <input onClick={(e) => setPassword(e.target.value)} t className='border-1 border-gray-400 rounded-lg px-4 py-2  max-w-[300px] w-full' type="password" placeholder='Password' />
+                <input onChange={(e) => setEmail(e.target.value)} className='border-1 border-gray-400 rounded-lg px-4 py-2  max-w-[300px] w-full' type="email" placeholder='Email Address' />
+                <input onChange={(e) => setPassword(e.target.value)} className='border-1 border-gray-400 rounded-lg px-4 py-2  max-w-[300px] w-full' type="password" placeholder='Password' />
               </>
             )
           }

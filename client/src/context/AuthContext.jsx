@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
     //check user auth
     const checkAuth = async () => {
         try {
-            const { data } = await axios.get("/api/auth/check");
+            const { data } = await axios.post("/api/auth/check");
             if (data.success) {
                 setAuthUser(data.user);
                 connectSocket(data.user);
@@ -33,8 +33,8 @@ export const AuthProvider = ({ children }) => {
         try {
             const { data } = await axios.post(`/api/auth/${state}`, credantials);
             if (data.success) {
-                setAuthUser(data.user);
-                connectSocket(data.token);
+                setAuthUser(data.userData);
+                connectSocket(data.userData);
                 axios.defaults.headers.common["token"] = data.token;
                 setToken(data.token);
                 localStorage.setItem("token", data.token);
@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         setSocket(newSocket);
 
         newSocket.on("getOnlineUsers", (userIds) => {
-            setOnlineUser(userIds);
+            setOnlineUsers(userIds);
         })
     }
 
@@ -99,7 +99,7 @@ export const AuthProvider = ({ children }) => {
         authUser,
         onlineUsers,
         socket,
-        login, 
+        login,
         logout,
         updateProfile
 
