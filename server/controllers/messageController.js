@@ -4,33 +4,52 @@ import cloudinary from "../lib/cloudinary.js"
 import { io, userSocketMap } from "../server.js"
 
 export const getUserForSidebar = async (req, res) => {
-    try {
-        const userId = req.body._id;
 
-        //istekten gelen id dışındaki tüm userları çeker yani istenen kişinin kendi mesajını çekmiyoruz
-        const filteredUsers = User.findById({ _id: { $ne: userId } }).select("-password");
+    try {
+        const userId = req.user._id;
+
+        const filteredUsers = await User.find({
+            _id: { $ne: userId }
+        }).select("-password");
 
         const unSeenMessages = {};
-        const promises = filteredUsers.map((user) => {
-            const messages = Message.find({ senderId: user._id, receiverId: userId, seen: false });
-            if (messages.length > 0) {
-                unSeenMessages[user._id] = messages.length;
-            }
-        })
-        await Promise.all(promises);
-        res.json({ success: true, users: filteredUsers, unSeenMessages });
+
+        await Promise.all(
+            filteredUsers.map(async (user) => {
+                const messages = await Message.find({
+                    senderId: user._id,
+                    receiverId: userId,
+                    seen: false
+                });
+
+                if (messages.length > 0) {
+                    unSeenMessages[user._id] = messages.length;
+                }
+            })
+        );
+
+        res.json({
+            success: true,
+            users: filteredUsers,
+            unSeenMessages
+        });
+
+
     } catch (error) {
-        console.log(error.message);
-        res.json({ success: false, message: error.message });
+        console.log(error);
+        res.json({
+            success: false,
+            message: error.message
+        });
     }
-}
+};
 
 
 //get all messages for seleceted user
 export const getMessages = async (req, res) => {
     try {
         const { id: selectedUserId } = req.params;
-        const myId = req.body._id;
+        const myId = req.user._id;
         //benim karşıya ve karşının bana gönderdiği mesajlar ayrı olarak arraye  aldık
         const messages = await Message.find({
             $or: [
@@ -80,7 +99,7 @@ export const sendMessage = async (req, res) => {
         })
 
         const receiverSocketId = userSocketMap(receiverId);
-        if(receiverSocketId) {
+        if (receiverSocketId) {
             io.to(receiverSocketId).emit("newMessage", newMessage)
         }
 
