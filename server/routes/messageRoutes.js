@@ -7,7 +7,7 @@ const messageRouter = express.Router();
 
 messageRouter.post("/users", protectRoute, getUserForSidebar);
 messageRouter.post("/:id", protectRoute, getMessages);
-messageRouter.post("mark/:id", protectRoute, markMessageAsSeen);
+messageRouter.post("/mark/:id", protectRoute, markMessageAsSeen);
 messageRouter.post("/send/:id", protectRoute, sendMessage);
 
 export default messageRouter;

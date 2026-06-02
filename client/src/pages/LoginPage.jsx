@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import assets from '../assets/assets'
 import { AuthContext } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 const LoginPage = () => {
 
@@ -12,6 +13,24 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
 
   const { login } = useContext(AuthContext);
+
+  const [agreeTerms, setAgreeTerms] = useState(false);
+
+  const isFormValid = () => {
+    event.preventDefault();
+    if (!agreeTerms) {
+      toast.error("You must agree to the terms of use & privacy policy.");
+      return false;
+    }
+
+    if (currState === "Signup" && !isDataSubmitted) {
+      setIsDataSubmitted(true);
+      return;
+    }
+
+    login(currState === "Signup" ? "signup" : "login", { fullName, email, password, bio });
+
+  }
 
   const onSubmitHandler = (event) => {
     event.preventDefault();
@@ -55,12 +74,13 @@ const LoginPage = () => {
             )
           }
 
-          <button type='submit' onClick={() => setIsDataSubmitted(true)} className='text-white text-sm rounded-lg px-4 py-2 max-w-[300px] w-full bg-violet-500 mx-auto cursor-pointer'>
+          <button type='submit' onClick={() => { setIsDataSubmitted(true); isFormValid() }} className='text-white text-sm rounded-lg px-4 py-2 max-w-[300px] w-full bg-violet-500 mx-auto cursor-pointer'>
             {currState === "Signup" ? "Create Account" : "Login Now"}
           </button>
 
           <div className='flex flex-row gap-2'>
-            <input type="checkbox" />
+            <input type="checkbox"
+              checked={agreeTerms} onChange={(e) => setAgreeTerms(e.target.checked)} />
             <p className='text-xs text-gray-400'>Agree to the terms of use & privacy policy.</p>
           </div>
           <div className='flex flex-row gap-1 items-center'>

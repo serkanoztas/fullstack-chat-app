@@ -4,13 +4,15 @@ import { useNavigate } from "react-router-dom"
 import { AuthContext } from '../context/AuthContext';
 import { ChatContext } from '../context/ChatContext';
 
-const SideBar = ({ selectedUser, setSelectedUser }) => {
+const SideBar = () => {
 
-  const { getUsers, users, selectedChat, setSelectedChat, unseenMessages, setUnseenMessages } = useContext(ChatContext);
+  const { getUsers, users, selectedUser, setSelectedUser, unseenMessages, setUnseenMessages } = useContext(ChatContext);
 
   const { logout, onlineUsers, authUser } = useContext(AuthContext);
 
   const [input, setInput] = useState(false);
+
+
 
   useEffect(() => {
     getUsers();
@@ -23,7 +25,7 @@ const SideBar = ({ selectedUser, setSelectedUser }) => {
         ? user.fullName.toLowerCase().includes(input.toLowerCase())
         : true
     );
-    console.log("filteredUsers", filteredUsers);
+  console.log("filteredUsers", filteredUsers);
 
   const navigate = useNavigate();
 
@@ -51,7 +53,7 @@ const SideBar = ({ selectedUser, setSelectedUser }) => {
       <div className='flex flex-col mt-2'>
         {
           filteredUsers.map((user, index) => (
-            <div onClick={() => setSelectedUser(user)} key={index} className={`flex flex-row items-center gap-2 p-2 pl-4 relative rounded-xl ${selectedUser?._id === user._id && "bg-[#282142]/50"}`}>
+            <div onClick={() => {setSelectedUser(user); setUnseenMessages(prev => ({...prev, [user._id]: 0}))}} key={index} className={`flex flex-row items-center gap-2 p-2 pl-4 relative rounded-xl ${selectedUser?._id === user._id && "bg-[#282142]/50"}`}>
               <img src={user.profilePic} className='w-[35px] aspect-[1/1] rounded-full' />
               <div>
                 <p> {user.fullName} </p>
