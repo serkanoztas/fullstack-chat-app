@@ -32,11 +32,11 @@ const SideBar = () => {
 
 
   return (
-    <div className={`bg-[#8185B2]/10 h-full overflow-y-scroll p-5 text-white ${selectedUser ? "max-md:hidden" : ""}`}>
+    <div className={`bg-[#8185B2]/10 h-full overflow-y-scroll p-5 text-white ${selectedUser ? "" : ""}`}>
       <div className='flex flex-row justify-between items-center'>
-        <img src={assets.logo} className='max-w-40' />
+        <img src={assets.logo} className='w-28 sm:w-30 md:w-35 lg:w-40' />
         <div className='group relative py-2 '>
-          <img src={assets.menu_icon} className='max-h-5 cursor-pointer' />
+          <img src={assets.menu_icon} className='max-h-5 cursor-pointer w-5' />
           <div className='hidden group-hover:block absolute top-full right-0 z-20 w-32 p-5 rounded-md bg-[#282142] text-gray-100 border border-gray-600'>
             <p onClick={() => navigate("/profile")} className='cursor-pointer text-sm'>Edit Profile</p>
             <hr className='bg-gray-500' />
