@@ -12,19 +12,19 @@ Projenin temel arayüzlerine ait bazı görseller:
 
 (Kullanıcıların hesap oluşturduğu ve güvenli giriş yaptığı ekran)
 
-Ekran görüntünüzü buraya ekleyin: ![Login Ekranı](./client//screenshots/chatappPic1.png)
+![Login Ekranı](./client//screenshots/chatappPic1.png)
 
 2. Mesajlaşma Arayüzü (Chat)
 
 (Kullanıcıların anlık olarak sohbet ettiği, mesajların gerçek zamanlı aktığı ekran)
 
-Ekran görüntünüzü buraya ekleyin: ![Mesajlaşma Ekranı](./client//screenshots/chatappPic2.png)
+![Mesajlaşma Ekranı](./client//screenshots/chatappPic2.png)
 
 3. Profil Düzenleme
 
 (Kullanıcıların kişisel bilgilerini, avatarlarını veya durumlarını güncelleyebildiği ekran)
 
-Ekran görüntünüzü buraya ekleyin: ![Profil Ekranı](./client//screenshots/chatappPic3.png)
+![Profil Ekranı](./client//screenshots/chatappPic3.png)
 
 ✨ Özellikler
 
